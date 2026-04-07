@@ -15,7 +15,7 @@ livekit-api==1.1.0
 livekit-agents==1.5.1
 livekit-plugins-openai==1.5.1
 livekit-plugins-silero==1.5.1
-livekit-plugins-hedra==0.1.0
+livekit-plugins-hedra==1.5.1
 
 # LiveKit Agent Dependencies
 aiofiles>=24
