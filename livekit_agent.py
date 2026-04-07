@@ -153,7 +153,7 @@ async def medical_avatar_entrypoint(ctx: JobContext):
             patient_name = scenario.get('arabicTranslations', {}).get('patientInfo', {}).get('name', 'المريض')
             
             # Create a simple agent session for Hedra
-            from livekit.agents import AgentSession, VoiceAssistantOptions
+            from livekit.agents import AgentSession
             from livekit.plugins import openai, silero
             
             session = AgentSession(
