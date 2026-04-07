@@ -15,6 +15,14 @@ from livekit import agents, rtc
 from livekit.agents import AgentServer, AgentSession, Agent, JobContext
 from livekit.plugins import openai, silero, hedra
 
+# Pydantic workaround for compatibility
+try:
+    from livekit.agents.voice.agent_activity import SessionUsageUpdatedEvent
+    from livekit.agents.voice.agent_activity import ModelUsage
+    SessionUsageUpdatedEvent.model_rebuild()
+except Exception:
+    pass
+
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
