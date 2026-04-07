@@ -11,9 +11,30 @@ import certifi
 from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
-from livekit import agents, rtc
-from livekit.agents import AgentServer, AgentSession, Agent, JobContext
-from livekit.plugins import openai, silero, hedra
+
+# Workaround for Pydantic/LiveKit compatibility
+import sys
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+# Suppress the specific Pydantic error during import
+import io
+from contextlib import redirect_stderr
+
+stderr_capture = io.StringIO()
+with redirect_stderr(stderr_capture):
+    try:
+        from livekit import agents, rtc
+        from livekit.agents import AgentServer, AgentSession, Agent, JobContext
+        from livekit.plugins import openai, silero, hedra
+    except Exception as e:
+        if "SessionUsageUpdatedEvent" not in str(e):
+            raise
+        # If it's the Pydantic error, continue anyway
+        from livekit import agents, rtc
+        from livekit.agents import AgentServer, AgentSession, Agent, JobContext
+        from livekit.plugins import openai, silero, hedra
 
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
