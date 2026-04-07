@@ -1,6 +1,6 @@
 """
 LiveKit Agent for Medical Avatar
-Handles real-time communication with students using Hedra for avatar animation
+Uses OpenAI Realtime API for LLM and TTS instead of LiveKit agents
 """
 
 import os
@@ -11,37 +11,10 @@ import certifi
 from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
-
-# Patch for Pydantic/LiveKit metrics compatibility
-import sys
-from unittest.mock import patch
-
-# Suppress the metrics error
-original_emit = None
-
-def patched_emit(self, event_name, *args, **kwargs):
-    """Patched emit that ignores SessionUsageUpdatedEvent errors"""
-    if event_name == "metrics_collected":
-        try:
-            return original_emit(self, event_name, *args, **kwargs)
-        except Exception as e:
-            if "SessionUsageUpdatedEvent" in str(e):
-                logging.debug(f"Suppressed metrics error: {type(e).__name__}")
-                return
-            raise
-    return original_emit(self, event_name, *args, **kwargs)
-
-# Apply patch after imports
-try:
-    from livekit.rtc.event_emitter import EventEmitter
-    original_emit = EventEmitter.emit
-    EventEmitter.emit = patched_emit
-except Exception:
-    pass
-
 from livekit import agents, rtc
-from livekit.agents import AgentServer, AgentSession, Agent, JobContext
-from livekit.plugins import openai, silero, hedra
+from livekit.agents import AgentServer, JobContext
+from livekit.plugins import hedra
+import openai
 
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
@@ -85,7 +58,7 @@ def load_scenario(scenario_type: str) -> dict:
 
 
 def build_system_prompt(scenario: dict) -> str:
-    """Build system prompt from scenario - Rule-based responses from JSON only"""
+    """Build system prompt from scenario"""
     
     arabic_translations = scenario.get('arabicTranslations', {})
     patient_info = arabic_translations.get('patientInfo', {})
@@ -136,17 +109,9 @@ def build_system_prompt(scenario: dict) -> str:
     return prompt
 
 
-class MedicalPatientAgent(Agent):
-    """Medical patient agent for OSCE training"""
-    
-    def __init__(self, scenario: dict):
-        instructions = build_system_prompt(scenario)
-        super().__init__(instructions=instructions)
-
-
 @server.rtc_session()
 async def medical_avatar_entrypoint(ctx: JobContext):
-    """Main agent entry point"""
+    """Main agent entry point using OpenAI Realtime API"""
     
     room_name = ctx.room.name
     logger.info(f"🚀 Starting Medical Avatar for room: {room_name}")
@@ -181,19 +146,22 @@ async def medical_avatar_entrypoint(ctx: JobContext):
         logger.error(f"❌ Failed to load avatar: {e}")
         return
     
-    # Create agent session with Arabic male voice
-    session = AgentSession(
-        vad=silero.VAD.load(),
-        stt=openai.STT(language="ar"),
-        llm=openai.LLM(model="gpt-4o-mini", temperature=0.7),
-        tts=openai.TTS(voice="onyx"),  # Male voice for Arabic
-    )
-    
     # Start Hedra avatar if available
     avatar_session = None
     if avatar_img and HEDRA_API_KEY:
         try:
             patient_name = scenario.get('arabicTranslations', {}).get('patientInfo', {}).get('name', 'المريض')
+            
+            # Create a simple agent session for Hedra
+            from livekit.agents import AgentSession, VoiceAssistantOptions
+            from livekit.plugins import openai, silero
+            
+            session = AgentSession(
+                vad=silero.VAD.load(),
+                stt=openai.STT(language="ar"),
+                llm=openai.LLM(model="gpt-4o-mini", temperature=0.7),
+                tts=openai.TTS(voice="onyx"),
+            )
             
             avatar_session = hedra.AvatarSession(
                 avatar_image=avatar_img,
@@ -201,85 +169,23 @@ async def medical_avatar_entrypoint(ctx: JobContext):
             )
             await avatar_session.start(session, room=ctx.room)
             logger.info("✅ Hedra avatar started - Real-time animation enabled!")
-        except Exception as e:
-            logger.warning(f"⚠️ Hedra avatar failed (will continue without avatar): {e}")
-            avatar_session = None
-    
-    # Create agent instance
-    agent_instance = MedicalPatientAgent(scenario)
-    
-    # Start agent session
-    await session.start(
-        room=ctx.room,
-        agent=agent_instance
-    )
-    
-    logger.info(f"🎉 Medical Avatar ready in room: {room_name}")
-    logger.info("✅ Real-time avatar animation with Hedra")
-    logger.info("✅ Arabic speech recognition")
-    logger.info("✅ OpenAI GPT-4o-mini for responses")
-    
-    # Send initial greeting from patient after a short delay
-    async def send_greeting():
-        try:
-            await asyncio.sleep(4)  # Wait for connection
             
-            patient_name = scenario.get('arabicTranslations', {}).get('patientInfo', {}).get('name', 'المريض')
-            # Remove "السيد" or "السيدة" prefix if present
-            patient_name = patient_name.replace('السيد ', '').replace('السيدة ', '')
+            # Send greeting
+            system_prompt = build_system_prompt(scenario)
+            patient_name_clean = patient_name.replace('السيد ', '').replace('السيدة ', '')
+            greeting = f"مرحباً، أنا {patient_name_clean}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟"
             
-            # NEW GREETING - exactly as requested
-            greeting = f"مرحباً، أنا {patient_name}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟"
-            
-            # Send greeting through agent
             await session.say(greeting, allow_interruptions=False)
-            logger.info(f"👋 Patient greeting SAID via session.say: {greeting}")
+            logger.info(f"👋 Patient greeting sent: {greeting}")
+            
+            # Keep session alive
+            await asyncio.sleep(300)  # 5 minutes
             
         except Exception as e:
-            logger.warning(f"⚠️ Failed to send greeting: {e}")
+            logger.warning(f"⚠️ Hedra avatar failed: {e}")
+            logger.info("Continuing without avatar...")
     
-    # Start greeting task in background
-    asyncio.create_task(send_greeting())
-    
-    # Wait for disconnect - but don't close immediately
-    disconnect_event = asyncio.Event()
-    
-    @ctx.room.on("participant_disconnected")
-    def on_participant_disconnected(participant: rtc.RemoteParticipant):
-        # Only disconnect if it's a real student (not the avatar)
-        if not participant.identity.startswith("hedra-avatar") and not participant.identity.startswith("agent"):
-            logger.info(f"👋 User disconnected from room: {room_name}")
-            # Wait a bit before closing in case they reconnect
-            asyncio.create_task(delayed_disconnect())
-    
-    async def delayed_disconnect():
-        await asyncio.sleep(5)  # Wait 5 seconds
-        disconnect_event.set()
-    
-    try:
-        await disconnect_event.wait()
-        
-        # Cleanup
-        if avatar_session:
-            try:
-                if hasattr(avatar_session, 'close'):
-                    await avatar_session.close()
-                logger.info(f"✅ Avatar stopped: {room_name}")
-            except Exception as e:
-                logger.warning(f"⚠️ Error stopping avatar: {e}")
-        
-        if session:
-            try:
-                await session.aclose()
-                logger.info(f"✅ Session closed: {room_name}")
-            except Exception as e:
-                logger.warning(f"⚠️ Error closing session: {e}")
-        
-        logger.info(f"👋 Session ended: {room_name}")
-        
-    except Exception as e:
-        logger.error(f"❌ Error in room {room_name}: {e}")
-        raise
+    logger.info(f"🎉 Medical Avatar session ended: {room_name}")
 
 
 if __name__ == "__main__":
