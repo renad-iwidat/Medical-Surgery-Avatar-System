@@ -8,35 +8,12 @@ import json
 import logging
 import asyncio
 import certifi
-import sys
 from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
 from livekit import agents, rtc
 from livekit.agents import AgentServer, AgentSession, Agent, JobContext
 from livekit.plugins import openai, silero, hedra
-
-# Suppress Pydantic warnings
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-# Monkey patch to suppress SessionUsageUpdatedEvent error
-try:
-    from livekit.agents.voice import agent_activity
-    original_on_metrics = agent_activity.AgentActivityTracker._on_metrics_collected
-    
-    def patched_on_metrics(self, metrics):
-        try:
-            return original_on_metrics(self, metrics)
-        except Exception as e:
-            if "SessionUsageUpdatedEvent" in str(e):
-                logging.debug(f"Suppressed Pydantic error: {e}")
-                return
-            raise
-    
-    agent_activity.AgentActivityTracker._on_metrics_collected = patched_on_metrics
-except Exception:
-    pass
 
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
