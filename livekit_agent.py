@@ -12,29 +12,36 @@ from pathlib import Path
 from PIL import Image
 from dotenv import load_dotenv
 
-# Workaround for Pydantic/LiveKit compatibility
+# Patch for Pydantic/LiveKit metrics compatibility
 import sys
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+from unittest.mock import patch
 
-# Suppress the specific Pydantic error during import
-import io
-from contextlib import redirect_stderr
+# Suppress the metrics error
+original_emit = None
 
-stderr_capture = io.StringIO()
-with redirect_stderr(stderr_capture):
-    try:
-        from livekit import agents, rtc
-        from livekit.agents import AgentServer, AgentSession, Agent, JobContext
-        from livekit.plugins import openai, silero, hedra
-    except Exception as e:
-        if "SessionUsageUpdatedEvent" not in str(e):
+def patched_emit(self, event_name, *args, **kwargs):
+    """Patched emit that ignores SessionUsageUpdatedEvent errors"""
+    if event_name == "metrics_collected":
+        try:
+            return original_emit(self, event_name, *args, **kwargs)
+        except Exception as e:
+            if "SessionUsageUpdatedEvent" in str(e):
+                logging.debug(f"Suppressed metrics error: {type(e).__name__}")
+                return
             raise
-        # If it's the Pydantic error, continue anyway
-        from livekit import agents, rtc
-        from livekit.agents import AgentServer, AgentSession, Agent, JobContext
-        from livekit.plugins import openai, silero, hedra
+    return original_emit(self, event_name, *args, **kwargs)
+
+# Apply patch after imports
+try:
+    from livekit.rtc.event_emitter import EventEmitter
+    original_emit = EventEmitter.emit
+    EventEmitter.emit = patched_emit
+except Exception:
+    pass
+
+from livekit import agents, rtc
+from livekit.agents import AgentServer, AgentSession, Agent, JobContext
+from livekit.plugins import openai, silero, hedra
 
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
