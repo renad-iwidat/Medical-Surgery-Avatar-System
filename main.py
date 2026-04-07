@@ -234,6 +234,12 @@ async def generate_video(request: VideoGenerationRequest):
 async def health():
     return {"status": "ok", "service": "Medical Avatar Surgery"}
 
+@app.get("/")
+async def root():
+    """Redirect to the main application"""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/index-livekit.html", status_code=301)
+
 # Mount static files LAST
 public_dir = Path("public")
 if public_dir.exists():

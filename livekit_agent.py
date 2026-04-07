@@ -174,7 +174,8 @@ async def medical_avatar_entrypoint(ctx: JobContext):
             await avatar_session.start(session, room=ctx.room)
             logger.info("✅ Hedra avatar started - Real-time animation enabled!")
         except Exception as e:
-            logger.warning(f"⚠️ Hedra avatar failed: {e}")
+            logger.warning(f"⚠️ Hedra avatar failed (will continue without avatar): {e}")
+            avatar_session = None
     
     # Create agent instance
     agent_instance = MedicalPatientAgent(scenario)
