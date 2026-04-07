@@ -1,0 +1,297 @@
+{
+  "id": "scenario_pancreatitis_001",
+  "title": "Acute Pancreatitis - Severe Epigastric Pain",
+  "difficulty": "advanced",
+  "examType": "OSCE",
+  "department": "Surgery",
+  "session": "morning",
+  "patientInfo": {
+    "name": "Mr. Naji",
+    "age": 50,
+    "gender": "male",
+    "occupation": "Office employee",
+    "patientImage": "/img/avatar-morning.jpeg"
+  },
+  "referralReason": "Severe upper abdominal pain for 12 hours",
+  "chiefComplaint": "Severe upper abdominal pain for 12 hours",
+  "presentingComplaintFull": "I have had severe upper abdominal pain for the past 12 hours. It started suddenly last night after dinner. The pain is constant and stabbing, and it goes to my back. It is 9 out of 10 in severity. It gets worse when I lie flat, but slightly better when I lean forward. I also feel nauseous, I have vomited several times, and I feel bloated. I had a low fever but I did not measure it.",
+  "presentingComplaintShort": "Severe upper abdominal pain for 12 hours",
+  "historyOfPresentingComplaint": {
+    "abdominalPain": {
+      "site": "Epigastric area",
+      "onset": "Sudden, last night after dinner",
+      "character": "Severe constant stabbing pain",
+      "radiation": "Radiating to the back",
+      "severity": "9/10",
+      "aggravatingFactors": "Worse when lying flat",
+      "relievingFactors": "Slightly better when leaning forward and with analgesia taken at home (cannot name them)",
+      "englishTerms": ["epigastric pain", "abdominal pain", "stabbing pain", "radiating to back", "pancreatic pain", "acute abdomen", "upper abdominal pain"]
+    },
+    "associatedSymptoms": {
+      "nausea": "Present",
+      "vomiting": "Several times, gastric contents",
+      "fever": "Low grade, undocumented",
+      "abdominalDistention": "Feeling of abdominal distention",
+      "bowelMotionChange": "No change in bowel motion",
+      "jaundice": "No",
+      "chestPain": "No",
+      "shortnessOfBreath": "No",
+      "englishTerms": ["nausea", "vomiting", "fever", "abdominal distention", "bloating", "bowel motion", "jaundice", "chest pain", "shortness of breath"]
+    }
+  },
+  "systematicReview": {
+    "general": {
+      "weightLoss": "No",
+      "englishTerms": ["weight loss"]
+    },
+    "urinary": {
+      "abnormality": "No urinary abnormality",
+      "colourChange": "No change of colour",
+      "englishTerms": ["urinary symptoms", "urine colour", "hematuria"]
+    }
+  },
+  "pastMedicalHistory": {
+    "hyperlipidemia": "Yes",
+    "englishTerms": ["past medical history", "PMH", "hyperlipidemia", "dyslipidemia"]
+  },
+  "pastSurgicalHistory": {
+    "bariatricSurgery": "3 years ago",
+    "englishTerms": ["past surgical history", "PSH", "bariatric surgery", "gastric bypass", "sleeve gastrectomy"]
+  },
+  "drugHistory": {
+    "medications": [
+      "Rosuvastatin (antihyperlipidemia)",
+      "Aspirin 100 mg daily",
+      "Multivitamins"
+    ],
+    "englishTerms": ["drug history", "medications", "rosuvastatin", "statin", "aspirin", "multivitamins"]
+  },
+  "allergies": {
+    "drugAllergies": "NKFDA (No Known Food or Drug Allergies)",
+    "englishTerms": ["allergies", "drug allergies", "NKFDA", "NKDA", "no known allergies"]
+  },
+  "familyHistory": {
+    "fatherIHD": "Father has Ischemic Heart Disease (IHD)",
+    "englishTerms": ["family history", "ischemic heart disease", "IHD", "coronary artery disease", "CAD"]
+  },
+  "socialHistory": {
+    "smoking": "Smoker",
+    "alcohol": "Non-alcoholic (denies alcohol consumption)",
+    "recentTravelling": "No recent travelling",
+    "occupation": "Office employee",
+    "englishTerms": ["social history", "smoking", "alcohol", "travel history", "occupation"]
+  },
+  "examinerInstructions": {
+    "questionsToBeAnswered": {
+      "chiefComplaint": "Severe upper abdominal pain for 12 hours",
+      "historyOfPresentingIllness": {
+        "painSite": "Epigastric area",
+        "painOnset": "Sudden, last night after dinner",
+        "painCharacter": "Severe constant stabbing pain",
+        "painRadiation": "Radiating to the back",
+        "painSeverity": "9/10",
+        "aggravatingFactors": "Worse when lying flat",
+        "relievingFactors": "Slightly better when leaning forward and with analgesia",
+        "associatedSymptoms": "Nausea, vomiting several times, low grade fever, feeling of abdominal distention",
+        "negativeSymptoms": "No change in bowel motion, no jaundice, no chest pain or shortness of breath"
+      },
+      "pastMedicalAndSurgicalHistory": {
+        "medical": "Hyperlipidemia",
+        "surgical": "Bariatric surgery 3 years ago"
+      },
+      "medicationHistoryAndAllergy": {
+        "allergy": "NKFDA",
+        "medications": "Rosuvastatin (antihyperlipidemia), Aspirin 100 mg daily, Multivitamins"
+      },
+      "socialHistory": {
+        "alcohol": "Denied history of alcohol consumption",
+        "smoking": "Smoker",
+        "travelling": "Denies recent travelling",
+        "occupation": "Office job"
+      },
+      "familyHistory": "Father has IHD",
+      "knowledgeQuestions": {
+        "mostLikelyCausesOfAcutePancreatitis": {
+          "question": "What are the most likely causes of acute pancreatitis in this patient?",
+          "answer": ["Gallbladder stones", "Hyperlipidemia"],
+          "englishTerms": ["gallstones", "cholelithiasis", "hyperlipidemia", "causes of pancreatitis", "etiology"]
+        },
+        "howPancreatitisIsDiagnosed": {
+          "question": "How is pancreatitis diagnosed?",
+          "answer": {
+            "clinically": "Typically epigastric pain radiating to the back",
+            "lab": "Amylase, lipase x3 times normal level",
+            "imaging": "Abdominal ultrasound / Abdomen CT"
+          },
+          "englishTerms": ["diagnosis", "amylase", "lipase", "abdominal ultrasound", "CT abdomen", "clinical diagnosis"]
+        },
+        "bestTimeForCholecystectomy": {
+          "question": "What is the best time to do cholecystectomy?",
+          "answer": "Same admission if possible",
+          "englishTerms": ["cholecystectomy", "gallbladder removal", "timing of surgery", "index admission cholecystectomy"]
+        }
+      }
+    }
+  },
+  "scoringChecklist": {
+    "stationDescription": "History Taking",
+    "communicationsAndAttitude": {
+      "introducesSelf": { "description": "Introduces self to patient", "marks": 0.5 },
+      "consentAndExplain": { "description": "Consent and explain what want to do", "marks": 0.5 }
+    },
+    "skills": {
+      "chiefComplaint": { "description": "Chief complaint", "marks": 1 },
+      "historyOfPresentingIllness": {
+        "painSiteAndOnset": { "description": "Pain: site & onset", "marks": 0.5 },
+        "painCharacterAndRadiation": { "description": "Pain: character & radiation", "marks": 0.5 },
+        "painSeverity": { "description": "Pain: severity", "marks": 0.25 },
+        "painRelievingAndAggravating": { "description": "Pain: relieving & aggravating factors", "marks": 0.5 },
+        "associatedSymptoms": { "description": "Associated symptoms", "marks": 0.5 }
+      },
+      "pastMedicalHistory": { "description": "Past medical Hx", "marks": 0.5 },
+      "pastSurgicalHistory": { "description": "Past surgical Hx", "marks": 0.5 },
+      "drugHistory": { "description": "Drug history", "marks": 0.5 },
+      "allergyHistory": { "description": "Allergy Hx", "marks": 0.25 },
+      "familyHistory": { "description": "Family history", "marks": 0.5 },
+      "socialHistory": { "description": "Social Hx", "marks": 0.5 },
+      "systemicReview": { "description": "Systemic review", "marks": 0.5 }
+    },
+    "knowledge": {
+      "causesOfPancreatitis": { "description": "What are the most likely causes of acute pancreatitis in this patient?", "marks": 1 },
+      "diagnosisOfPancreatitis": {
+        "clinically": { "description": "Clinically", "marks": 0.25 },
+        "lab": { "description": "Lab", "marks": 0.5 },
+        "imaging": { "description": "Imaging", "marks": 0.25 }
+      },
+      "bestTimeForCholecystectomy": { "description": "What is the best time to do cholecystectomy?", "marks": 0.5 }
+    }
+  },
+  "visualDescription": {
+    "generalAppearance": {
+      "age": "50 years old",
+      "gender": "Male",
+      "ethnicity": "Middle Eastern / Mediterranean",
+      "build": "Stocky, medium-to-large frame, visible abdomen (central obesity)",
+      "posture": "Hunched forward, slightly curled, holding upper abdomen or leaning forward - key visual clue for pancreatic pain relief posture",
+      "facialExpression": "Grimacing, flushed, visibly in distress, sweating on forehead and upper lip"
+    },
+    "skin": {
+      "jaundice": "No",
+      "colour": "Normal for ethnicity, flushed appearance particularly on cheeks and neck",
+      "perspiration": "Diaphoretic - moist with perspiration on forehead, temples, and upper lip",
+      "rashes": "No visible rashes or lesions"
+    },
+    "eyes": {
+      "sclera": "White, clear, no jaundice",
+      "expression": "Slightly narrowed from pain, brow furrowed",
+      "periorbital": "Normal"
+    },
+    "face": {
+      "forehead": "Beads of sweat visible",
+      "eyebrows": "Furrowed, drawn together",
+      "cheeks": "Flushed",
+      "mouth": "Slightly open, breathing may appear shallow",
+      "lips": "Moist, slightly parted",
+      "jaw": "Tense"
+    },
+    "hair": {
+      "description": "Short, dark brown or black, minimal grey, may appear slightly damp from perspiration"
+    },
+    "neck": {
+      "description": "Thick, muscular appearance, slight sheen of perspiration visible"
+    },
+    "hands": {
+      "position": "One hand may be placed on upper abdomen (protective posture)",
+      "fingers": "Thick",
+      "nailBeds": "Normal color, no clubbing"
+    },
+    "clothing": {
+      "description": "Casual comfortable clothing: simple dark-colored t-shirt (to contrast with flushed skin), possibly open button-up overshirt, slightly disheveled or wrinkled, no tie or formal wear"
+    },
+    "backgroundSetting": "Emergency department or acute care setting, examination bed visible behind him or clinic chair with medical equipment in background"
+  },
+  "avatarPersonality": {
+    "responseStyle": "In severe pain, grimacing, hunched forward holding abdomen, sweating, distressed. Cooperative but clearly uncomfortable. Speaks with difficulty due to pain. May pause mid-sentence due to pain waves.",
+    "temperature": 0.3,
+    "maxTokens": 150
+  },
+  "diagnosis": {
+    "mostLikely": "Acute Pancreatitis",
+    "causes": ["Gallbladder stones", "Hyperlipidemia"],
+    "englishTerms": ["acute pancreatitis", "pancreatitis", "gallstone pancreatitis", "hyperlipidemic pancreatitis"]
+  },
+  "diagnosticTests": {
+    "clinical": "Typically epigastric pain radiating to the back",
+    "lab": "Amylase, lipase x3 times normal level",
+    "imaging": "Abdominal ultrasound / Abdomen CT",
+    "englishTerms": ["amylase", "lipase", "abdominal ultrasound", "CT abdomen", "pancreatic enzymes"]
+  },
+  "arabicTranslations": {
+    "patientInfo": {
+      "name": "السيد ناجي",
+      "age": "50 سنة",
+      "occupation": "موظف مكتبي",
+      "gender": "ذكر"
+    },
+    "presentingComplaint": {
+      "short": "ألم شديد في أعلى البطن منذ 12 ساعة",
+      "full": "عندي ألم شديد في أعلى بطني من 12 ساعة. بدأ فجأة البارحة بالليل بعد العشا. الألم ثابت وطاعن وبيروح على ظهري. شدته 9 من 10. بيزيد لما أنام على ظهري بس بيخف شوي لما أنحني للأمام ومع المسكنات يلي أخذتها بالبيت بس ما بعرف أسماءها. كمان عندي غثيان واستفرغت كذا مرة وحاسس بانتفاخ بالبطن وحرارة خفيفة بس ما قستها."
+    },
+    "historyOfPresentingComplaint": {
+      "abdominalPain": {
+        "site": "منطقة شرسوفية (أعلى البطن)",
+        "onset": "مفاجئ، البارحة بالليل بعد العشا",
+        "character": "ألم طاعن شديد ومستمر",
+        "radiation": "يمتد إلى الظهر",
+        "severity": "9 من 10",
+        "aggravatingFactors": "يزداد سوءاً عند الاستلقاء على الظهر",
+        "relievingFactors": "يتحسن قليلاً عند الانحناء للأمام ومع المسكنات"
+      },
+      "associatedSymptoms": {
+        "nausea": "موجود",
+        "vomiting": "عدة مرات، محتويات معدية",
+        "fever": "حرارة خفيفة غير موثقة",
+        "abdominalDistention": "شعور بانتفاخ البطن",
+        "bowelMotionChange": "لا يوجد تغير في حركة الأمعاء",
+        "jaundice": "لا يوجد يرقان",
+        "chestPain": "لا يوجد ألم صدري",
+        "shortnessOfBreath": "لا يوجد ضيق تنفس"
+      }
+    },
+    "systematicReview": {
+      "weightLoss": "لا يوجد فقدان وزن",
+      "urinary": "لا يوجد أي خلل بولي أو تغير في لون البول"
+    },
+    "pastMedicalHistory": {
+      "hyperlipidemia": "فرط شحميات الدم"
+    },
+    "pastSurgicalHistory": {
+      "bariatricSurgery": "جراحة السمنة قبل 3 سنوات"
+    },
+    "drugHistory": {
+      "medications": [
+        "روزوفاستاتين (مضاد لفرط شحميات الدم)",
+        "أسبرين 100 ملغ يومياً",
+        "فيتامينات متعددة"
+      ]
+    },
+    "allergies": "لا توجد حساسية دوائية أو غذائية معروفة (NKFDA)",
+    "familyHistory": {
+      "fatherIHD": "والده مصاب بمرض القلب الإقفاري (IHD)"
+    },
+    "socialHistory": {
+      "smoking": "مدخن",
+      "alcohol": "لا يشرب الكحول",
+      "recentTravelling": "لا يوجد سفر حديث",
+      "occupation": "موظف مكتبي"
+    },
+    "diagnosis": "التهاب البنكرياس الحاد",
+    "causesOfPancreatitis": ["حصوات المرارة", "فرط شحميات الدم"],
+    "diagnosticTests": {
+      "clinical": "ألم شرسوفي نموذجي يمتد إلى الظهر",
+      "lab": "أميلاز، ليباز أكثر من 3 أضعاف المستوى الطبيعي",
+      "imaging": "تصوير بالموجات فوق الصوتية للبطن / تصوير مقطعي للبطن"
+    },
+    "bestTimeForCholecystectomy": "في نفس الإدخال إن أمكن"
+  }
+}

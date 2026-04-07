@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أفاتار طبي - OSCE Training</title>
+    <link rel="stylesheet" href="style.css?v=15">
+    <!-- LiveKit SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client@1.15.13/dist/livekit-client.umd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header id="main-header" style="display:none;">
+            <h1>🏥 أفاتار طبي تفاعلي</h1>
+            <p>نظام تدريب OSCE</p>
+        </header>
+
+        <!-- Screen 0: Password -->
+        <div id="password-screen" class="screen active">
+            <div class="password-page">
+                <div class="password-box">
+                    <div class="password-icon">🔒</div>
+                    <h2>أدخل كلمة المرور</h2>
+                    <input type="password" id="password-input" placeholder="كلمة المرور..." onkeypress="if(event.key==='Enter') checkPassword()">
+                    <button class="btn-primary" onclick="checkPassword()">دخول</button>
+                    <p id="password-error" class="password-error"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 1: Welcome + Department Selection -->
+        <div id="welcome-screen" class="screen">
+            <div class="top-logos-bar">
+                <img src="/img/l_logo.webp" alt="جامعة النجاح الوطنية" class="top-logo-img">
+            </div>
+            <div class="welcome-page">
+                <div class="welcome-top">
+                    <h2>المريض الافتراضي - OSCE</h2>
+                    <p class="welcome-desc">تدرّب على مهاراتك السريرية مع مرضى افتراضيين بالذكاء الاصطناعي</p>
+                </div>
+
+                <div class="departments-grid">
+                    <div class="dept-card" onclick="selectDepartment('Surgery')">
+                        <div class="dept-icon"><img src="/img/surgery-icon.png" alt="الجراحة العامة" class="dept-img"></div>
+                        <div class="dept-name">الجراحة العامة</div>
+                        <div class="dept-sub">General Surgery</div>
+                    </div>
+                </div>
+            </div>
+            <footer class="welcome-footer">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                    <div class="footer-credit">جامعة النجاح الوطنية - كلية الطب</div>
+                    <div class="footer-contact">contact@najah.edu</div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Screen 2: Session Selection -->
+        <div id="session-selection-screen" class="screen">
+            <button class="btn-back" onclick="goBack('welcome-screen')">→ رجوع</button>
+            <div class="selection-container">
+                <div class="selection-title">اختر الجلسة</div>
+                <div class="sessions-grid">
+                    <div class="session-card" onclick="selectSession('morning')">
+                        <div class="session-name">الجلسة الصباحية</div>
+                        <div class="session-sub">Morning Session</div>
+                    </div>
+                    <div class="session-card" onclick="selectSession('evening')">
+                        <div class="session-name">الجلسة المسائية</div>
+                        <div class="session-sub">Evening Session</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Student Name -->
+        <div id="student-name-screen" class="screen">
+            <div class="student-name-container">
+                <div class="student-name-box">
+                    <div class="student-name-icon">👤</div>
+                    <h2>أدخل اسمك</h2>
+                    <div class="student-name-dept-label">الجراحة العامة</div>
+                    <input type="text" id="student-name-input" placeholder="اسمك الكامل..." onkeypress="if(event.key==='Enter') confirmStudentName()">
+                    <button class="btn-primary" onclick="confirmStudentName()">ابدأ الجلسة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: Session -->
+        <div id="session-screen" class="screen">
+            <!-- Timer -->
+            <div class="session-timer-corner">
+                <span class="timer-icon">🕐</span>
+                <span id="session-timer">00:00</span>
+            </div>
+            
+            <!-- Recording Overlay -->
+            <div id="recording-overlay" class="recording-overlay hidden">
+                <div class="recording-indicator">
+                    <div class="recording-pulse"></div>
+                    <div class="recording-mic-icon">🎤</div>
+                    <div class="recording-text">يستمع الآن...</div>
+                    <div class="recording-subtext">تكلم بوضوح</div>
+                </div>
+            </div>
+            
+            <div class="session-layout">
+                <!-- Video Section -->
+                <div class="video-section">
+                    <div class="video-container">
+                        <video id="avatar-video-stream" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;"></video>
+                        <audio id="avatar-audio" autoplay></audio>
+                        <div id="avatar-placeholder" class="placeholder" style="display: none;">
+                            <div class="avatar-icon">👨‍⚕️</div>
+                            <p>المريض الافتراضي</p>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="mic-btn" class="control-btn mic-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                            </svg>
+                        </button>
+                        <button id="end-btn" class="control-btn end-btn" onclick="endSession()">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16.5 2.25h3.75c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25h-3.75c-.69 0-1.25-.56-1.25-1.25V3.5c0-.69.56-1.25 1.25-1.25zm0 13.5h3.75c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25h-3.75c-.69 0-1.25-.56-1.25-1.25V17c0-.69.56-1.25 1.25-1.25zM3.75 2.25H7.5c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25H3.75C3.06 8.5 2.5 7.94 2.5 7.25V3.5c0-.69.56-1.25 1.25-1.25zm0 13.5H7.5c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25H3.75c-.69 0-1.25-.56-1.25-1.25V17c0-.69.56-1.25 1.25-1.25z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p id="mic-status" class="mic-hint">🎤 اضغط مطولاً على مسطرة الكيبورد (Space) للتحدث، ثم ارفع إصبعك لإرسال السؤال</p>
+                </div>
+
+                <!-- Info Section -->
+                <div class="info-section">
+                    <div class="card">
+                        <h3>معلومات المريض</h3>
+                        <div id="patient-info"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>الشكوى الرئيسية</h3>
+                        <div id="chief-complaint"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>المحادثة</h3>
+                        <div id="transcript" class="transcript"></div>
+                        
+                        <!-- Text input -->
+                        <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="اكتب سؤالك هنا..." />
+                            <button id="send-btn" class="btn-send">إرسال</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Thank You -->
+        <div id="thank-you-screen" class="screen">
+            <div class="thank-you-overlay">
+                <div class="thank-you-box">
+                    <div class="thank-you-icon">✅</div>
+                    <p>شكراً لك على المشاركة!</p>
+                    <button class="btn-primary" onclick="location.reload()">جلسة جديدة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="translations.js?v=16"></script>
+    <script src="livekit-client.js?v=16"></script>
+    <script src="livekit-integration.js?v=16"></script>
+    <script src="app-livekit.js?v=16"></script>
+</body>
+</html>

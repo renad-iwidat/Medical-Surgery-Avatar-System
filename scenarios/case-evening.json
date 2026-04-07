@@ -1,0 +1,358 @@
+{
+  "id": "scenario_obstructive_jaundice_001",
+  "title": "Obstructive Jaundice - Yellow Discoloration of Eyes and Skin",
+  "difficulty": "advanced",
+  "examType": "OSCE",
+  "department": "Surgery",
+  "session": "evening",
+  "patientInfo": {
+    "name": "Mr. Hassan",
+    "age": 67,
+    "gender": "male",
+    "occupation": "Retired accountant",
+    "patientImage": "/img/avatar-evening.png"
+  },
+  "referralReason": "3-week history of progressive jaundice",
+  "chiefComplaint": "3-week history of yellow discoloration of the eyes and skin",
+  "presentingComplaintFull": "I noticed my eyes and skin turning yellow about 3 weeks ago. My family pointed it out first, and it has been getting worse. My urine has become very dark, and my stools are pale and difficult to flush. I have lost my appetite and lost about 6 kilograms in the past month. I feel weak and tired, and my clothes have become loose on me.",
+  "presentingComplaintShort": "3-week history of yellow discoloration of the eyes and skin",
+  "historyOfPresentingComplaint": {
+    "jaundice": {
+      "onset": "3 weeks ago, gradual worsening",
+      "firstNoticed": "Family pointed it out",
+      "progression": "Progressively worsening",
+      "englishTerms": ["jaundice", "icterus", "yellow discoloration", "scleral icterus", "obstructive jaundice", "painless jaundice"]
+    },
+    "urineChanges": {
+      "description": "Dark colored urine",
+      "englishTerms": ["dark urine", "tea-colored urine", "bilirubinuria", "choluria"]
+    },
+    "stoolChanges": {
+      "description": "Pale stools, difficult to flush",
+      "englishTerms": ["pale stools", "clay-colored stools", "acholic stools", "steatorrhea"]
+    },
+    "weightLoss": {
+      "amount": "About 6 kilograms in the past month",
+      "unintentional": true,
+      "clothesLoose": "Yes, clothes have become loose",
+      "englishTerms": ["weight loss", "unintentional weight loss", "cachexia", "wasting"]
+    },
+    "appetite": {
+      "description": "Progressive loss of appetite",
+      "englishTerms": ["loss of appetite", "anorexia", "decreased appetite"]
+    },
+    "fatigue": {
+      "description": "Increasingly weak and tired",
+      "englishTerms": ["fatigue", "weakness", "tiredness", "malaise"]
+    },
+    "abdominalSymptoms": {
+      "pain": "No abdominal pain",
+      "fullness": "Sense of fullness or heaviness in the upper abdomen, especially after meals",
+      "nausea": "No",
+      "vomiting": "No",
+      "fever": "No",
+      "itching": "No history of itching",
+      "englishTerms": ["abdominal fullness", "epigastric heaviness", "nausea", "vomiting", "fever", "pruritus", "itching"]
+    },
+    "riskFactors": {
+      "smoking": "One pack per day for over 30 years",
+      "alcohol": "Used to drink socially, stopped 5 years ago",
+      "familyHistory": "Brother died from liver or bile duct cancer",
+      "diet": "Prefers fatty food (bread, rice, fried food; rarely eats fruits or vegetables)",
+      "englishTerms": ["smoking", "alcohol", "family history of cancer", "fatty diet", "risk factors", "pack-year history"]
+    }
+  },
+  "systematicReview": {
+    "cardiovascular": {
+      "chestPain": "No",
+      "englishTerms": ["chest pain"]
+    },
+    "respiratory": {
+      "cough": "No",
+      "shortnessOfBreath": "No",
+      "englishTerms": ["cough", "shortness of breath", "dyspnea"]
+    },
+    "urinary": {
+      "symptoms": "No urinary symptoms",
+      "englishTerms": ["urinary symptoms", "dysuria", "frequency"]
+    },
+    "musculoskeletal": {
+      "backDiscomfort": "Occasional back discomfort, attributes to old age",
+      "englishTerms": ["back pain", "back discomfort"]
+    },
+    "psychiatric": {
+      "moodChanges": "No changes in mood",
+      "englishTerms": ["mood changes", "depression"]
+    },
+    "gastrointestinal": {
+      "bowelHabits": "No changes other than pale stools",
+      "englishTerms": ["bowel habits", "constipation", "diarrhea"]
+    }
+  },
+  "pastMedicalHistory": {
+    "diabetesMellitus": "Type 2 diabetes mellitus, diagnosed 10 years ago, poorly controlled",
+    "hypertension": "Yes, does not check blood pressure regularly, poorly controlled",
+    "liverDisease": "No previous liver disease",
+    "gallstones": "No history of gallstones",
+    "englishTerms": ["past medical history", "PMH", "type 2 diabetes", "DM", "hypertension", "HTN", "liver disease", "gallstones"]
+  },
+  "pastSurgicalHistory": {
+    "previousSurgery": "No previous surgery",
+    "englishTerms": ["past surgical history", "PSH", "no previous surgery"]
+  },
+  "drugHistory": {
+    "medications": [
+      "Metformin (for diabetes, taken irregularly)",
+      "Amlodipine (for hypertension, taken only when he remembers)"
+    ],
+    "compliance": "Non-compliant with medications",
+    "englishTerms": ["drug history", "medications", "metformin", "amlodipine", "non-compliance", "medication adherence"]
+  },
+  "allergies": {
+    "drugAllergies": "NKFDA (No Known Food or Drug Allergies)",
+    "englishTerms": ["allergies", "drug allergies", "NKFDA", "NKDA", "no known allergies"]
+  },
+  "familyHistory": {
+    "brotherCancer": "Younger brother died from 'some kind of liver or bile duct cancer' in his fifties",
+    "gallstones": "No family history of gallstones",
+    "viralHepatitis": "No family history of viral hepatitis",
+    "englishTerms": ["family history", "bile duct cancer", "cholangiocarcinoma", "liver cancer", "gallstones", "viral hepatitis", "hepatitis B", "hepatitis C"]
+  },
+  "socialHistory": {
+    "smoking": "One pack of cigarettes per day for over 30 years",
+    "alcohol": "Used to drink alcohol socially in the past, stopped about 5 years ago",
+    "occupation": "Retired accountant",
+    "livingArrangement": "Lives with his wife",
+    "diet": "Mostly bread, rice, and fried food; rarely eats fruits or vegetables",
+    "englishTerms": ["social history", "smoking", "pack-year", "alcohol", "diet", "occupation", "lifestyle"]
+  },
+  "differentialDiagnosis": {
+    "diagnoses": [
+      {
+        "name": "Pancreatic head carcinoma",
+        "englishTerms": ["pancreatic head carcinoma", "pancreatic cancer", "head of pancreas tumor", "periampullary tumor"]
+      },
+      {
+        "name": "Cholangiocarcinoma",
+        "englishTerms": ["cholangiocarcinoma", "bile duct cancer", "biliary cancer"]
+      },
+      {
+        "name": "Ampullary carcinoma",
+        "englishTerms": ["ampullary carcinoma", "ampulla of Vater tumor", "periampullary carcinoma"]
+      },
+      {
+        "name": "Benign biliary stricture",
+        "englishTerms": ["benign biliary stricture", "biliary stricture", "bile duct stricture"]
+      }
+    ],
+    "englishTerms": ["differential diagnosis", "obstructive jaundice causes", "painless jaundice", "surgical jaundice"]
+  },
+  "diagnosticTests": {
+    "clinical": "Abdomen exam + systemic GI exam",
+    "lab": "CBC, Amylase, Lipase, LFT (Liver Function Tests)",
+    "imaging": "Abdominal ultrasound initially followed by abdominal CT",
+    "englishTerms": ["CBC", "complete blood count", "amylase", "lipase", "LFT", "liver function tests", "bilirubin", "ALP", "alkaline phosphatase", "GGT", "abdominal ultrasound", "CT abdomen", "MRCP"]
+  },
+  "charcotTriad": {
+    "question": "What is Charcot's triad?",
+    "answer": "Seen in acute cholangitis: fever (often with chills/rigors), right upper quadrant abdominal pain, and jaundice",
+    "components": ["Fever (often with chills/rigors)", "Right upper quadrant (RUQ) abdominal pain", "Jaundice"],
+    "englishTerms": ["Charcot's triad", "Charcot triad", "acute cholangitis", "cholangitis", "fever", "RUQ pain", "jaundice", "rigors"]
+  },
+  "scoringChecklist": {
+    "stationDescription": "History Taking",
+    "communicationAndAttitude": {
+      "selfIntroduction": { "description": "Self-introduction", "marks": 0.5 },
+      "explainAndConsent": { "description": "Explain and ask for consent", "marks": 0.5 }
+    },
+    "historyTaking": {
+      "chiefComplaintAndDuration": { "description": "Chief complaint and its duration", "marks": 1 },
+      "historyOfPresentingIllness": {
+        "painSiteAndOnset": { "description": "Pain: site & onset", "marks": 0.5 },
+        "painCharacterAndRadiation": { "description": "Pain: character & radiation", "marks": 0.5 },
+        "painSeverity": { "description": "Pain: severity", "marks": 0.25 },
+        "painRelievingAndAggravating": { "description": "Pain: relieving & aggravating factors", "marks": 0.5 },
+        "associatedSymptoms": { "description": "Associated symptoms", "marks": 0.5 }
+      },
+      "pastMedicalHistory": { "description": "Past medical history", "marks": 0.5 },
+      "pastSurgicalHistory": { "description": "Past surgical history", "marks": 0.5 },
+      "drugHistory": { "description": "Drug history", "marks": 0.5 },
+      "allergyHistory": { "description": "Allergy history", "marks": 0.25 },
+      "socialHistory": { "description": "Social history", "marks": 0.5 },
+      "familyHistory": { "description": "Family history", "marks": 0.5 },
+      "systemicReview": { "description": "Systemic review", "marks": 0.5 }
+    },
+    "knowledge": {
+      "likelyCauses": { "description": "What are the likely causes of this patient's symptoms? Give 2", "marks": 1 },
+      "investigations": {
+        "clinically": { "description": "Clinically", "marks": 0.25 },
+        "lab": { "description": "Lab", "marks": 0.5 },
+        "imaging": { "description": "Imaging", "marks": 0.25 }
+      },
+      "charcotTriad": { "description": "What is Charcot's triad? Jaundice + Fever + RUQ pain", "marks": 0.5 }
+    }
+  },
+  "visualDescription": {
+    "generalAppearance": {
+      "age": "67 years old",
+      "gender": "Male",
+      "ethnicity": "Middle Eastern / Mediterranean (olive skin tone)",
+      "build": "Slim, slightly wasted appearance, mild temporal wasting (sunken temples)",
+      "posture": "Sitting upright but slightly slumped in chair, appearing fatigued",
+      "facialExpression": "Worried, drawn, with visible signs of discomfort but not acute pain"
+    },
+    "skin": {
+      "primaryFeature": "Pronounced jaundice",
+      "colour": "Distinct yellow-orange hue, most noticeable on face, neck, and exposed forearms",
+      "distribution": "Yellow discoloration is uniform, not patchy",
+      "texture": "Dry and slightly rough",
+      "bruising": "No visible bruising or petechiae"
+    },
+    "eyes": {
+      "sclera": "Deeply icteric (bright yellow) - the most striking feature",
+      "conjunctiva": "Pale (indicating possible anemia)",
+      "periorbital": "Mild shadowing, suggesting fatigue",
+      "expression": "Eyes appear slightly dull or fatigued"
+    },
+    "face": {
+      "cheekbones": "Prominent due to mild weight loss",
+      "nasolabialFolds": "Deepened",
+      "lips": "Pale, slightly dry",
+      "mouth": "Closed, neutral expression"
+    },
+    "hair": {
+      "description": "Short, grey-white, thinning, combed but slightly disheveled",
+      "eyebrows": "Grey, full"
+    },
+    "hands": {
+      "fingers": "Slender",
+      "nailBeds": "Pale",
+      "palms": "May show subtle yellow discoloration (palmar jaundice)",
+      "tremor": "No tremor visible"
+    },
+    "clothing": {
+      "description": "Simple light-colored button-up shirt (white or light blue) to contrast with jaundiced skin, shirt collar slightly loose around neck (suggesting weight loss), no tie or jacket"
+    },
+    "backgroundSetting": "Medical clinic examination room, neutral wall, examination chair, soft lighting (not harsh)"
+  },
+  "avatarPersonality": {
+    "responseStyle": "Worried and fatigued but cooperative. Speaks slowly and thoughtfully. Not in acute pain but clearly unwell. Mentions family concern about his appearance. May express worry about his brother's similar illness.",
+    "temperature": 0.3,
+    "maxTokens": 150
+  },
+  "arabicTranslations": {
+    "patientInfo": {
+      "name": "السيد حسان",
+      "age": "67 سنة",
+      "occupation": "محاسب متقاعد",
+      "gender": "ذكر"
+    },
+    "presentingComplaint": {
+      "short": "اصفرار العينين والجلد منذ 3 أسابيع",
+      "full": "لاحظت إنو عيوني وجلدي صاروا أصفر من حوالي 3 أسابيع. أهلي هم يلي نبهوني أول مرة، وعم يزيد مع الوقت. البول صار لونه غامق كتير، والبراز صار فاتح اللون وصعب ينزل بالمرحاض. فقدت شهيتي ونزل وزني حوالي 6 كيلو بالشهر الماضي. حاسس بضعف وتعب، وثيابي صارت واسعة عليي."
+    },
+    "historyOfPresentingComplaint": {
+      "jaundice": {
+        "onset": "منذ 3 أسابيع، تدريجي ومتزايد",
+        "firstNoticed": "العائلة لاحظت أولاً",
+        "progression": "يزداد سوءاً بشكل تدريجي"
+      },
+      "urineChanges": {
+        "description": "بول غامق اللون"
+      },
+      "stoolChanges": {
+        "description": "براز فاتح اللون وصعب ينزل بالمرحاض"
+      },
+      "weightLoss": {
+        "amount": "حوالي 6 كيلوغرام في الشهر الماضي",
+        "unintentional": "نعم، غير مقصود",
+        "clothesLoose": "نعم، الثياب صارت واسعة"
+      },
+      "appetite": {
+        "description": "فقدان تدريجي للشهية"
+      },
+      "fatigue": {
+        "description": "ضعف وتعب متزايد"
+      },
+      "abdominalSymptoms": {
+        "pain": "لا يوجد ألم بطني",
+        "fullness": "شعور بالامتلاء أو الثقل في أعلى البطن، خاصة بعد الأكل",
+        "nausea": "لا يوجد غثيان",
+        "vomiting": "لا يوجد استفراغ",
+        "fever": "لا يوجد حرارة",
+        "itching": "لا يوجد حكة"
+      },
+      "riskFactors": {
+        "smoking": "علبة سجائر يومياً لأكثر من 30 سنة",
+        "alcohol": "كان يشرب اجتماعياً، توقف قبل 5 سنوات",
+        "familyHistory": "أخوه الأصغر توفي من سرطان الكبد أو القنوات الصفراوية",
+        "diet": "يفضل الأكل الدسم (خبز، أرز، مقالي؛ نادراً ما يأكل فواكه أو خضار)"
+      }
+    },
+    "systematicReview": {
+      "cardiovascular": {
+        "chestPain": "لا يوجد ألم صدري"
+      },
+      "respiratory": {
+        "cough": "لا يوجد سعال",
+        "shortnessOfBreath": "لا يوجد ضيق تنفس"
+      },
+      "urinary": {
+        "symptoms": "لا توجد أعراض بولية"
+      },
+      "musculoskeletal": {
+        "backDiscomfort": "ألم ظهر عرضي، يعزوه لتقدم العمر"
+      },
+      "psychiatric": {
+        "moodChanges": "لا يوجد تغير في المزاج"
+      },
+      "gastrointestinal": {
+        "bowelHabits": "لا يوجد تغير ما عدا البراز الفاتح"
+      }
+    },
+    "pastMedicalHistory": {
+      "diabetesMellitus": "سكري نوع 2، مشخص منذ 10 سنوات، غير منضبط",
+      "hypertension": "ارتفاع ضغط الدم، لا يقيسه بانتظام، غير منضبط",
+      "liverDisease": "لا يوجد مرض كبدي سابق",
+      "gallstones": "لا يوجد تاريخ حصوات مرارية"
+    },
+    "pastSurgicalHistory": {
+      "previousSurgery": "لا يوجد عمليات جراحية سابقة"
+    },
+    "drugHistory": {
+      "medications": [
+        "ميتفورمين (للسكري، يأخذه بشكل غير منتظم)",
+        "أملوديبين (لضغط الدم، يأخذه فقط لما يتذكر)"
+      ],
+      "compliance": "غير ملتزم بالأدوية"
+    },
+    "allergies": "لا توجد حساسية دوائية أو غذائية معروفة (NKFDA)",
+    "familyHistory": {
+      "brotherCancer": "أخوه الأصغر توفي من 'نوع من سرطان الكبد أو القنوات الصفراوية' في الخمسينات من عمره",
+      "gallstones": "لا يوجد تاريخ عائلي لحصوات المرارة",
+      "viralHepatitis": "لا يوجد تاريخ عائلي لالتهاب الكبد الفيروسي"
+    },
+    "socialHistory": {
+      "smoking": "علبة سجائر يومياً لأكثر من 30 سنة",
+      "alcohol": "كان يشرب الكحول اجتماعياً، توقف قبل حوالي 5 سنوات",
+      "occupation": "محاسب متقاعد",
+      "livingArrangement": "يعيش مع زوجته",
+      "diet": "غالباً خبز وأرز ومقالي؛ نادراً ما يأكل فواكه أو خضار"
+    },
+    "differentialDiagnosis": [
+      "سرطان رأس البنكرياس",
+      "سرطان القنوات الصفراوية (كولانجيوكارسينوما)",
+      "سرطان أمبولة فاتر",
+      "تضيق صفراوي حميد"
+    ],
+    "diagnosticTests": {
+      "clinical": "فحص البطن + فحص الجهاز الهضمي الشامل",
+      "lab": "تعداد دم كامل (CBC)، أميلاز، ليباز، وظائف الكبد (LFT)",
+      "imaging": "تصوير بالموجات فوق الصوتية للبطن مبدئياً يليه تصوير مقطعي للبطن"
+    },
+    "charcotTriad": {
+      "question": "ما هو ثالوث شاركو؟",
+      "answer": "يُشاهد في التهاب الأقنية الصفراوية الحاد: حمى (غالباً مع قشعريرة/رعشة)، ألم في الربع العلوي الأيمن من البطن، ويرقان"
+    }
+  }
+}
