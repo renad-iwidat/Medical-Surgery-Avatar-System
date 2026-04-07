@@ -53,28 +53,9 @@ async def create_room(request: RoomRequest):
             max_participants=request.max_participants
         )
         
-        # Try to dispatch agent to room
-        try:
-            import subprocess
-            agent_name = "A_8Pq8D9nhVzVX"
-            
-            # Use lk CLI to dispatch agent
-            result = subprocess.run([
-                "./lk.exe", "dispatch", "create",
-                "--room", request.room_name,
-                "--agent-name", agent_name,
-                "--url", room_manager.url,
-                "--api-key", room_manager.api_key,
-                "--api-secret", room_manager.api_secret
-            ], capture_output=True, text=True, timeout=10)
-            
-            if result.returncode == 0:
-                logger.info(f"✅ Agent dispatched to room: {request.room_name}")
-            else:
-                logger.warning(f"⚠️ Agent dispatch failed: {result.stderr}")
-        except Exception as e:
-            logger.warning(f"⚠️ Could not dispatch agent: {e}")
-            # Continue anyway - agent might join automatically
+        # Agent is automatically dispatched via livekit_agent.py
+        logger.info(f"✅ Room created: {request.room_name}")
+        logger.info(f"   Agent will join automatically when participant connects")
         
         return room
     except Exception as e:
