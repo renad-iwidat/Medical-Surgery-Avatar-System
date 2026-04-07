@@ -3,6 +3,7 @@ uvicorn==0.24.0
 python-dotenv==1.0.0
 openai>=1.107.2
 pydantic==2.3.0
+pydantic-core==2.6.3
 aiohttp>=3.10.0
 pydantic-settings==2.0.3
 python-socketio==5.10.0
