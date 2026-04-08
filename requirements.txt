@@ -37,10 +37,10 @@ typer>=0.15.1
 watchfiles>=1.0
 pillow>=10.3.0
 
-# OpenTelemetry
-opentelemetry-api~=1.39.0
-opentelemetry-exporter-otlp~=1.39.0
-opentelemetry-sdk~=1.39.0
+# OpenTelemetry - Downgrade to avoid Pydantic issues
+opentelemetry-api==1.20.0
+opentelemetry-exporter-otlp==1.20.0
+opentelemetry-sdk==1.20.0
 
 # Additional Dependencies
 pyjwt>=2.0.0
