@@ -358,15 +358,18 @@ async function endSession() {
         // End LiveKit session
         await endLiveKitSession();
         
-        // Show thank you screen
-        showScreen('thank-you-screen');
-        document.getElementById('main-header').style.display = 'none';
-        
         // Reset
         currentSessionType = null;
         currentStudentName = null;
         
-        console.log(`✅ Session ended`);
+        // Go back to student name screen
+        showScreen('student-name-screen');
+        document.getElementById('main-header').style.display = 'block';
+        
+        // Clear the input field
+        document.getElementById('student-name-input').value = '';
+        
+        console.log(`✅ Session ended - returning to student name screen`);
     } catch (error) {
         console.error(`❌ Failed to end session: ${error}`);
     }
