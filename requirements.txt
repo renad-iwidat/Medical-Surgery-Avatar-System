@@ -2,20 +2,20 @@ fastapi==0.104.1
 uvicorn==0.24.0
 python-dotenv==1.0.0
 openai>=1.107.2
-pydantic==2.5.0
+pydantic>=2.6.0
 aiohttp>=3.10.0
-pydantic-settings==2.1.0
+pydantic-settings>=2.1.0
 python-socketio==5.10.0
 python-engineio==4.8.0
 requests>=2.31.0
 
-# LiveKit Core
-livekit==1.1.3
-livekit-api==1.1.0
-livekit-agents==1.5.1
-livekit-plugins-openai==1.5.1
-livekit-plugins-silero==1.5.1
-livekit-plugins-hedra==1.5.1
+# LiveKit Core - Compatible versions
+livekit>=0.17.0
+livekit-api>=0.7.0
+livekit-agents>=1.1.0
+livekit-plugins-openai>=1.1.0
+livekit-plugins-silero>=1.1.0
+livekit-plugins-hedra>=1.1.0
 
 # LiveKit Agent Dependencies
 aiofiles>=24
@@ -26,7 +26,7 @@ colorama>=0.4.6
 docstring-parser>=0.16
 eval-type-backport
 livekit-blingfire<2,~=1.1
-livekit-protocol<2,>=1.1.3
+livekit-protocol>=1.1.3
 nest-asyncio>=1.6.0
 numpy>=1.26.0
 onnxruntime>=1.18
@@ -37,10 +37,10 @@ typer>=0.15.1
 watchfiles>=1.0
 pillow>=10.3.0
 
-# OpenTelemetry - Downgrade to avoid Pydantic issues
-opentelemetry-api==1.20.0
-opentelemetry-exporter-otlp==1.20.0
-opentelemetry-sdk==1.20.0
+# OpenTelemetry - Compatible version
+opentelemetry-api>=1.20.0
+opentelemetry-exporter-otlp>=1.20.0
+opentelemetry-sdk>=1.20.0
 
 # Additional Dependencies
 pyjwt>=2.0.0
