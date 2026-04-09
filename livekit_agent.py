@@ -194,24 +194,9 @@ async def medical_avatar_entrypoint(ctx: JobContext):
             # NEW GREETING - exactly as requested
             greeting = f"مرحباً، أنا {patient_name}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟"
             
-            # Send greeting through agent
+            # Send greeting through agent (avatar will speak it)
             await session.say(greeting, allow_interruptions=False)
             logger.info(f"👋 Patient greeting SAID via session.say: {greeting}")
-            
-            # Also send as data message so it appears in transcript
-            try:
-                greeting_data = {
-                    "type": "transcription",
-                    "role": "patient",
-                    "text": greeting
-                }
-                await ctx.room.local_participant.publish_data(
-                    json.dumps(greeting_data, ensure_ascii=False).encode('utf-8'),
-                    reliable=True
-                )
-                logger.info(f"👋 Greeting sent as data message for transcript")
-            except Exception as e:
-                logger.warning(f"⚠️ Failed to send greeting as data message: {e}")
             
         except Exception as e:
             logger.warning(f"⚠️ Failed to send greeting: {e}")

@@ -47,7 +47,6 @@ function selectSession(session) {
     currentSessionType = session;
     console.log(`✅ Session type selected: ${currentSessionType}`);
     showScreen('student-name-screen');
-    updateSessionDisplay();
 }
 
 // ===== STUDENT NAME AUTOCOMPLETE =====
@@ -109,19 +108,6 @@ document.addEventListener('click', (e) => {
 });
 
 // ===== STUDENT NAME SCREEN =====
-
-function updateSessionDisplay() {
-    const display = document.getElementById('current-session-display');
-    if (display) {
-        if (currentSessionType === 'morning') {
-            display.textContent = '🌅 الجلسة الصباحية (Morning Session)';
-        } else if (currentSessionType === 'evening') {
-            display.textContent = '🌙 الجلسة المسائية (Evening Session)';
-        } else {
-            display.textContent = '⚠️ لم يتم اختيار جلسة';
-        }
-    }
-}
 
 function confirmStudentName() {
     console.log('🔵 confirmStudentName called');
@@ -268,8 +254,22 @@ async function startSession() {
         sessionStartTime = Date.now();
         console.log('⏱️ Session start time recorded, but timer will start when avatar speaks');
         
-        // NOTE: Greeting is now sent by the agent via livekit_agent.py
-        // It will appear in the transcript when the agent sends it as a data message
+        // Show greeting in transcript - ONLY ONCE per session
+        if (scenario) {
+            const patientName = scenario.arabicTranslations?.patientInfo?.name || 'المريض';
+            // Remove "السيد" or "السيدة" prefix
+            const cleanName = patientName.replace('السيد ', '').replace('السيدة ', '');
+            // NEW GREETING - exactly as requested
+            const greeting = `مرحباً، أنا ${cleanName}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟`;
+            
+            // Add greeting to transcript immediately - ONLY if not already shown
+            const transcript = document.getElementById('transcript');
+            if (transcript && !transcript.dataset.greetingShown) {
+                addToTranscript('avatar', greeting);
+                transcript.dataset.greetingShown = 'true';
+                console.log('👋 Patient greeting displayed:', greeting);
+            }
+        }
         
         console.log(`✅ Session started`);
     } catch (error) {
@@ -506,9 +506,6 @@ async function endSession() {
         
         // Clear the input field
         document.getElementById('student-name-input').value = '';
-        
-        // Update session display
-        updateSessionDisplay();
         
         console.log(`✅ Session ended - returning to student name screen`);
         console.log(`✅ Session type KEPT for next student: ${currentSessionType}`);
