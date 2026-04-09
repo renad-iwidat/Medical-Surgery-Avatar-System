@@ -100,18 +100,33 @@ async def medical_avatar_entrypoint(ctx: JobContext):
     room_name = ctx.room.name
     logger.info(f"🚀 Starting Medical Avatar for room: {room_name}")
     
-    # Determine scenario type from room name
-    scenario_type = "morning" if "morning" in room_name.lower() else "evening"
+    # Determine scenario type from room name - more precise matching
+    room_name_lower = room_name.lower()
+    if "morning" in room_name_lower:
+        scenario_type = "morning"
+    elif "evening" in room_name_lower:
+        scenario_type = "evening"
+    else:
+        # Default to evening if not specified
+        scenario_type = "evening"
+        logger.warning(f"⚠️ Could not determine scenario type from room name, defaulting to evening")
+    
     avatar_path = AVATAR_MORNING if scenario_type == "morning" else AVATAR_EVENING
     
     logger.info(f"📋 Scenario: {scenario_type}")
     logger.info(f"🖼️ Avatar: {avatar_path}")
+    logger.info(f"📍 Room name analysis: '{room_name}' -> scenario_type: '{scenario_type}'")
+    logger.info(f"✅ CONFIRMED: Using {scenario_type.upper()} scenario")
     
     # Load scenario
     scenario = load_scenario(scenario_type)
     if not scenario:
         logger.error("❌ Failed to load scenario")
         return
+    
+    # Verify scenario loaded correctly
+    patient_name = scenario.get('arabicTranslations', {}).get('patientInfo', {}).get('name', 'Unknown')
+    logger.info(f"✅ Scenario loaded: Patient = {patient_name}, Type = {scenario_type}")
     
     # Load avatar image
     avatar_img = None
@@ -182,6 +197,21 @@ async def medical_avatar_entrypoint(ctx: JobContext):
             # Send greeting through agent
             await session.say(greeting, allow_interruptions=False)
             logger.info(f"👋 Patient greeting SAID via session.say: {greeting}")
+            
+            # Also send as data message so it appears in transcript
+            try:
+                greeting_data = {
+                    "type": "transcription",
+                    "role": "patient",
+                    "text": greeting
+                }
+                await ctx.room.local_participant.publish_data(
+                    json.dumps(greeting_data, ensure_ascii=False).encode('utf-8'),
+                    reliable=True
+                )
+                logger.info(f"👋 Greeting sent as data message for transcript")
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to send greeting as data message: {e}")
             
         except Exception as e:
             logger.warning(f"⚠️ Failed to send greeting: {e}")

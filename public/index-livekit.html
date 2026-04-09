@@ -76,11 +76,13 @@
 
         <!-- Screen 3: Student Name -->
         <div id="student-name-screen" class="screen">
+            <button class="btn-back" onclick="goBack('session-selection-screen')">→ تغيير الجلسة</button>
             <div class="student-name-container">
                 <div class="student-name-box">
                     <div class="student-name-icon">👤</div>
                     <h2>أدخل اسمك</h2>
                     <div class="student-name-dept-label">الجراحة العامة</div>
+                    <div id="current-session-display" class="current-session-display"></div>
                     <div class="autocomplete-wrapper">
                         <input type="text" id="student-name-input" placeholder="اسمك الكامل..." onkeypress="if(event.key==='Enter') confirmStudentName()" oninput="handleStudentNameInput(this.value)">
                         <div id="autocomplete-dropdown" class="autocomplete-dropdown hidden"></div>
@@ -176,9 +178,9 @@
     </div>
 
     <!-- Scripts -->
-    <script src="translations.js?v=22"></script>
-    <script src="livekit-client.js?v=22"></script>
-    <script src="livekit-integration.js?v=22"></script>
-    <script src="app-livekit.js?v=22"></script>
+    <script src="translations.js?v=24"></script>
+    <script src="livekit-client.js?v=24"></script>
+    <script src="livekit-integration.js?v=24"></script>
+    <script src="app-livekit.js?v=24"></script>
 </body>
 </html>

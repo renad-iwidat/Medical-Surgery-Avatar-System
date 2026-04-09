@@ -45,7 +45,9 @@ function selectDepartment(dept) {
 
 function selectSession(session) {
     currentSessionType = session;
+    console.log(`✅ Session type selected: ${currentSessionType}`);
     showScreen('student-name-screen');
+    updateSessionDisplay();
 }
 
 // ===== STUDENT NAME AUTOCOMPLETE =====
@@ -108,6 +110,19 @@ document.addEventListener('click', (e) => {
 
 // ===== STUDENT NAME SCREEN =====
 
+function updateSessionDisplay() {
+    const display = document.getElementById('current-session-display');
+    if (display) {
+        if (currentSessionType === 'morning') {
+            display.textContent = '🌅 الجلسة الصباحية (Morning Session)';
+        } else if (currentSessionType === 'evening') {
+            display.textContent = '🌙 الجلسة المسائية (Evening Session)';
+        } else {
+            display.textContent = '⚠️ لم يتم اختيار جلسة';
+        }
+    }
+}
+
 function confirmStudentName() {
     console.log('🔵 confirmStudentName called');
     const nameInput = document.getElementById('student-name-input');
@@ -117,6 +132,11 @@ function confirmStudentName() {
     
     if (!name) {
         alert('الرجاء إدخال اسمك');
+        return;
+    }
+    
+    if (!currentSessionType) {
+        alert('الرجاء اختيار نوع الجلسة أولاً');
         return;
     }
     
@@ -215,6 +235,15 @@ async function startSession() {
         }
         
         // Initialize LiveKit session
+        console.log('🔍 DEBUG: currentSessionType =', currentSessionType);
+        console.log('🔍 DEBUG: currentStudentName =', currentStudentName);
+        
+        if (!currentSessionType) {
+            console.error('❌ ERROR: currentSessionType is null or undefined!');
+            alert('خطأ: لم يتم اختيار نوع الجلسة');
+            return;
+        }
+        
         const success = await initializeLiveKitSession(currentSessionType);
         
         console.log('✅ initializeLiveKitSession returned:', success);
@@ -239,25 +268,8 @@ async function startSession() {
         sessionStartTime = Date.now();
         console.log('⏱️ Session start time recorded, but timer will start when avatar speaks');
         
-        // Show greeting in transcript - ONLY ONCE per session
-        if (scenario) {
-            const patientName = scenario.arabicTranslations?.patientInfo?.name || 'المريض';
-            // Remove "السيد" or "السيدة" prefix
-            const cleanName = patientName.replace('السيد ', '').replace('السيدة ', '');
-            // NEW GREETING - exactly as requested
-            const greeting = `مرحباً، أنا ${cleanName}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟`;
-            
-            // Add greeting to transcript after a short delay - ONLY if not already shown
-            setTimeout(() => {
-                const transcript = document.getElementById('transcript');
-                // Check if greeting already exists in this session
-                if (transcript && !transcript.dataset.greetingShown) {
-                    addToTranscript('avatar', greeting);
-                    transcript.dataset.greetingShown = 'true';
-                    console.log('👋 Patient greeting displayed:', greeting);
-                }
-            }, 1500);
-        }
+        // NOTE: Greeting is now sent by the agent via livekit_agent.py
+        // It will appear in the transcript when the agent sends it as a data message
         
         console.log(`✅ Session started`);
     } catch (error) {
@@ -477,8 +489,8 @@ async function endSession() {
         sessionActive = false;
         console.log('🔓 Session protection deactivated');
         
-        // Reset
-        currentSessionType = null;
+        // DON'T reset currentSessionType - keep it for next student!
+        // Only reset student name
         currentStudentName = null;
         
         // Clear transcript and reset greeting flag
@@ -495,7 +507,11 @@ async function endSession() {
         // Clear the input field
         document.getElementById('student-name-input').value = '';
         
+        // Update session display
+        updateSessionDisplay();
+        
         console.log(`✅ Session ended - returning to student name screen`);
+        console.log(`✅ Session type KEPT for next student: ${currentSessionType}`);
     } catch (error) {
         console.error(`❌ Failed to end session: ${error}`);
     }

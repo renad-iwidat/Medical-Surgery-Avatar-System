@@ -33,22 +33,32 @@ def get_patient_context(scenario: dict) -> str:
 def get_arabic_prompt(scenario: dict) -> str:
     """Arabic system prompt - Enhanced with detailed rules"""
     
-    patient_info = scenario.get('patientInfo', {})
-    name = patient_info.get('name', 'المريض')
-    age = patient_info.get('age', '')
-    gender = patient_info.get('gender', 'male')
-    occupation = patient_info.get('occupation', '')
+    # Try to get from arabicTranslations first, then fall back to patientInfo
+    arabic_trans = scenario.get('arabicTranslations', {})
+    patient_info_ar = arabic_trans.get('patientInfo', {})
     
-    complaint = scenario.get('presentingComplaintFull', '')
+    patient_info = scenario.get('patientInfo', {})
+    name = patient_info_ar.get('name', patient_info.get('name', 'المريض'))
+    age = patient_info_ar.get('age', patient_info.get('age', ''))
+    gender = patient_info_ar.get('gender', patient_info.get('gender', 'male'))
+    occupation = patient_info_ar.get('occupation', patient_info.get('occupation', ''))
+    
+    # Get complaint from arabicTranslations first
+    complaint = arabic_trans.get('presentingComplaint', {}).get('full', scenario.get('presentingComplaintFull', ''))
+    
+    # Get history details
+    history = arabic_trans.get('historyOfPresentingComplaint', {})
     
     prompt = f"""أنت مريض افتراضي في جلسة تدريب طبية OSCE.
 
-معلوماتك:
+معلوماتك الشخصية:
 - الاسم: {name}
-- العمر: {age} سنة
+- العمر: {age}
 - الجنس: {gender}
 - المهنة: {occupation}
-- الشكوى الرئيسية: {complaint}
+
+شكواك الرئيسية:
+{complaint}
 
 === قواعد المحادثة - مهمة جداً ===
 
@@ -68,10 +78,10 @@ def get_arabic_prompt(scenario: dict) -> str:
 14. لا تتصرف زي موظف استقبال - أنت مريض
 15. إذا حكالك الطالب "مساء الخير"، قول "مساء الخير" أو "أهلاً" - ما تقول "كيف أساعدك"
 16. لا تسأل الطالب أسئلة - أنت المريض والطالب هو الدكتور
-17. ابحث في الـ JSON عن الإجابة قبل أن تقول "لا أعرف"
+17. ابحث في البيانات عن الإجابة قبل أن تقول "لا أعرف"
 18. هذا امتحان OSCE - لا تساعد الطالب ولا تعطيه معلومات زيادة
 19. إذا سُئلت نفس السؤال بطرق مختلفة، افهم المقصد وأجب بشكل مناسب
-20. دائماً ارجع للـ JSON للإجابة
+20. دائماً ارجع للبيانات المعطاة لك للإجابة
 
 === أمثلة على الإجابات الصحيحة ===
 
@@ -91,7 +101,11 @@ def get_arabic_prompt(scenario: dict) -> str:
 - كن بسيط ومباشر
 - تحدث بالعربية الفصحى مع لهجة فلسطينية/شامية خفيفة
 - أظهر الألم والانزعاج بشكل طبيعي
-- كن متعاوناً مع الطالب"""
+- كن متعاوناً مع الطالب
+
+=== معلومات إضافية ===
+
+تذكر: أنت تعرف فقط ما هو موجود في بيانات حالتك. إذا سُئلت عن شيء غير موجود في البيانات، قل "ما بعرف" أو "ما عندي معلومات عن هيك"."""
     
     return prompt
 
