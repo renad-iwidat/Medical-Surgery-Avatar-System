@@ -6,7 +6,7 @@
   "department": "Surgery",
   "session": "morning",
   "patientInfo": {
-    "name": "Mr. Naji",
+    "name": "Naji",
     "age": 50,
     "gender": "male",
     "occupation": "Office employee",
@@ -14,6 +14,7 @@
   },
   "referralReason": "Severe upper abdominal pain for 12 hours",
   "chiefComplaint": "Severe upper abdominal pain for 12 hours",
+  "chiefComplaintArabic": "ألم شديد في البطن",
   "presentingComplaintFull": "I have had severe upper abdominal pain for the past 12 hours. It started suddenly last night after dinner. The pain is constant and stabbing, and it goes to my back. It is 9 out of 10 in severity. It gets worse when I lie flat, but slightly better when I lean forward. I also feel nauseous, I have vomited several times, and I feel bloated. I had a low fever but I did not measure it.",
   "presentingComplaintShort": "Severe upper abdominal pain for 12 hours",
   "historyOfPresentingComplaint": {

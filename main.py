@@ -8,6 +8,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from session_manager import SessionManager
 from scenario_manager import ScenarioManager
+from student_manager import StudentManager
 from livekit_routes import router as livekit_router
 import json
 
@@ -28,6 +29,7 @@ app.add_middleware(
 # Initialize managers
 session_manager = SessionManager()
 scenario_manager = ScenarioManager()
+student_manager = StudentManager()
 medical_agent = None  # Lazy initialization
 
 def get_agent():
@@ -70,6 +72,25 @@ async def get_scenarios():
     """Get all available scenarios"""
     scenarios = scenario_manager.get_all_scenarios()
     return scenarios
+
+@app.get("/api/students/search")
+async def search_students(q: str = ""):
+    """Search students by name (autocomplete)"""
+    results = student_manager.search_students(q)
+    return {
+        "query": q,
+        "results": results,
+        "count": len(results)
+    }
+
+@app.get("/api/students/all")
+async def get_all_students():
+    """Get all students"""
+    students = student_manager.get_all_students()
+    return {
+        "total": len(students),
+        "students": students
+    }
 
 @app.get("/api/scenarios/{scenario_id}")
 async def get_scenario(scenario_id: str):

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أفاتار طبي - OSCE Training</title>
-    <link rel="stylesheet" href="style.css?v=15">
+    <link rel="stylesheet" href="style.css?v=22">
     <!-- LiveKit SDK -->
     <script src="https://cdn.jsdelivr.net/npm/livekit-client@1.15.13/dist/livekit-client.umd.js"></script>
 </head>
@@ -81,7 +81,10 @@
                     <div class="student-name-icon">👤</div>
                     <h2>أدخل اسمك</h2>
                     <div class="student-name-dept-label">الجراحة العامة</div>
-                    <input type="text" id="student-name-input" placeholder="اسمك الكامل..." onkeypress="if(event.key==='Enter') confirmStudentName()">
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="student-name-input" placeholder="اسمك الكامل..." onkeypress="if(event.key==='Enter') confirmStudentName()" oninput="handleStudentNameInput(this.value)">
+                        <div id="autocomplete-dropdown" class="autocomplete-dropdown hidden"></div>
+                    </div>
                     <button class="btn-primary" onclick="confirmStudentName()">ابدأ الجلسة</button>
                 </div>
             </div>
@@ -124,10 +127,11 @@
                                 <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
                             </svg>
                         </button>
-                        <button id="end-btn" class="control-btn end-btn" onclick="endSession()">
+                        <button id="end-btn" class="control-btn end-btn" onclick="endSession()" title="إنهاء الجلسة">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M16.5 2.25h3.75c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25h-3.75c-.69 0-1.25-.56-1.25-1.25V3.5c0-.69.56-1.25 1.25-1.25zm0 13.5h3.75c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25h-3.75c-.69 0-1.25-.56-1.25-1.25V17c0-.69.56-1.25 1.25-1.25zM3.75 2.25H7.5c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25H3.75C3.06 8.5 2.5 7.94 2.5 7.25V3.5c0-.69.56-1.25 1.25-1.25zm0 13.5H7.5c.69 0 1.25.56 1.25 1.25v3.75c0 .69-.56 1.25-1.25 1.25H3.75c-.69 0-1.25-.56-1.25-1.25V17c0-.69.56-1.25 1.25-1.25z"/>
                             </svg>
+                            <span class="btn-label">إنهاء</span>
                         </button>
                     </div>
                     <p id="mic-status" class="mic-hint">🎤 اضغط مطولاً على مسطرة الكيبورد (Space) للتحدث، ثم ارفع إصبعك لإرسال السؤال</p>
@@ -172,9 +176,9 @@
     </div>
 
     <!-- Scripts -->
-    <script src="translations.js?v=16"></script>
-    <script src="livekit-client.js?v=16"></script>
-    <script src="livekit-integration.js?v=16"></script>
-    <script src="app-livekit.js?v=16"></script>
+    <script src="translations.js?v=22"></script>
+    <script src="livekit-client.js?v=22"></script>
+    <script src="livekit-integration.js?v=22"></script>
+    <script src="app-livekit.js?v=22"></script>
 </body>
 </html>

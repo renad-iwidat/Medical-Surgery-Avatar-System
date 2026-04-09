@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+from prompts import get_system_prompt
 
 load_dotenv()
 
@@ -24,47 +25,8 @@ class MedicalAgent:
         """Generate response from the medical avatar"""
         
         try:
-            # Get Arabic translations from scenario
-            arabic_translations = scenario.get('arabicTranslations', {})
-            patient_info_ar = arabic_translations.get('patientInfo', {})
-            history_ar = arabic_translations.get('historyOfPresentingComplaint', {})
-            
-            # Build system prompt with Arabic data from scenario
-            patient_name = patient_info_ar.get('name', scenario.get('patientInfo', {}).get('name', 'المريض'))
-            patient_age = patient_info_ar.get('age', f"{scenario.get('patientInfo', {}).get('age', 'غير محدد')} سنة")
-            chief_complaint = arabic_translations.get('presentingComplaint', {}).get('full', scenario.get('presentingComplaintFull', ''))
-            
-            # Build detailed context from Arabic translations
-            context_parts = [
-                f"اسمك: {patient_name}",
-                f"عمرك: {patient_age}",
-                f"شكواك الرئيسية: {chief_complaint}"
-            ]
-            
-            # Add relevant history from Arabic translations
-            if history_ar:
-                for key, value in history_ar.items():
-                    if isinstance(value, dict) and 'description' in value:
-                        context_parts.append(f"- {value.get('description', '')}")
-            
-            system_prompt = f"""أنت مريض افتراضي في جلسة تدريب طبية OSCE. 
-
-معلوماتك الشخصية:
-{chr(10).join(context_parts)}
-
-التعليمات:
-1. تحدث باللغة العربية الفصحى والعامية الفلسطينية فقط - لا تستخدم لهجات أخرى
-2. كن واقعياً وطبيعياً في الإجابات
-3. لا تعطي تشخيصات طبية - أنت مريض وليس طبيب
-4. أجب على الأسئلة بناءً على معلومات المريض المعطاة
-5. إذا سُئلت عن شيء لا تعرفه، قل "لا أعرف" بطريقة طبيعية
-6. حافظ على الشخصية والحالة النفسية للمريض
-7. كن متعاوناً مع الطالب
-8. استخدم لغة بسيطة وطبيعية وواضحة
-9. تجنب المصطلحات الطبية المعقدة
-10. أظهر الأعراض والمشاعر المناسبة للحالة
-11. كن موجزاً في الإجابات (جملة أو جملتان فقط)
-12. استخدم المعلومات من السيناريو فقط"""
+            # Get system prompt from prompts.py (uses the new detailed rules)
+            system_prompt = get_system_prompt(scenario, language='ar')
             
             # Build messages
             messages = [

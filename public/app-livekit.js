@@ -25,7 +25,7 @@ function goBack(screenId) {
 
 function checkPassword() {
     const password = document.getElementById('password-input').value;
-    const correctPassword = 'surgery2024';
+    const correctPassword = '4444';
     
     if (password === correctPassword) {
         document.getElementById('password-error').textContent = '';
@@ -48,6 +48,64 @@ function selectSession(session) {
     showScreen('student-name-screen');
 }
 
+// ===== STUDENT NAME AUTOCOMPLETE =====
+
+async function handleStudentNameInput(value) {
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    
+    if (!value || value.length < 1) {
+        dropdown.classList.add('hidden');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/students/search?q=${encodeURIComponent(value)}`);
+        const data = await response.json();
+        
+        if (data.results && data.results.length > 0) {
+            // Build dropdown HTML
+            let html = '';
+            data.results.forEach((student, index) => {
+                html += `
+                    <div class="autocomplete-item" onclick="selectStudentFromAutocomplete('${student.name.replace(/'/g, "\\'")}')">
+                        <div class="autocomplete-item-name">${student.name}</div>
+                        <div class="autocomplete-item-id">ID: ${student.id}</div>
+                    </div>
+                `;
+            });
+            
+            dropdown.innerHTML = html;
+            dropdown.classList.remove('hidden');
+        } else {
+            dropdown.innerHTML = '<div class="autocomplete-no-results">لا توجد نتائج</div>';
+            dropdown.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('❌ Autocomplete error:', error);
+        dropdown.classList.add('hidden');
+    }
+}
+
+function selectStudentFromAutocomplete(name) {
+    const input = document.getElementById('student-name-input');
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    
+    input.value = name;
+    dropdown.classList.add('hidden');
+    
+    console.log('✅ Selected student:', name);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const input = document.getElementById('student-name-input');
+    const dropdown = document.getElementById('autocomplete-dropdown');
+    
+    if (input && dropdown && !input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+    }
+});
+
 // ===== STUDENT NAME SCREEN =====
 
 function confirmStudentName() {
@@ -66,6 +124,78 @@ function confirmStudentName() {
     console.log('✅ Starting session with name:', currentStudentName);
     console.log('✅ Session type:', currentSessionType);
     startSession();
+}
+
+// ===== PREVENT TAB CLOSE =====
+
+let sessionActive = false;
+
+// Prevent closing tab/window during active session
+window.addEventListener('beforeunload', (e) => {
+    if (sessionActive) {
+        e.preventDefault();
+        e.returnValue = 'هل أنت متأكد؟ يجب إنهاء الجلسة أولاً';
+        return 'هل أنت متأكد؟ يجب إنهاء الجلسة أولاً';
+    }
+});
+
+// Prevent closing via keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (sessionActive) {
+        // Ctrl+W or Cmd+W
+        if ((e.ctrlKey || e.metaKey) && e.key === 'w') {
+            e.preventDefault();
+            showSessionCloseWarning();
+            return false;
+        }
+        // Alt+F4 (Windows)
+        if (e.altKey && e.key === 'F4') {
+            e.preventDefault();
+            showSessionCloseWarning();
+            return false;
+        }
+    }
+});
+
+// Prevent closing via unload event (catches X button and tab close)
+window.addEventListener('unload', (e) => {
+    if (sessionActive) {
+        e.preventDefault();
+        showSessionCloseWarning();
+        return false;
+    }
+});
+
+// Prevent closing via pagehide event (more reliable for X button)
+window.addEventListener('pagehide', (e) => {
+    if (sessionActive && !e.persisted) {
+        // This is a real close, not a back/forward navigation
+        console.warn('⚠️ Attempted to close page during active session');
+        showSessionCloseWarning();
+    }
+});
+
+function showSessionCloseWarning() {
+    // Remove existing warning if any
+    const existing = document.getElementById('session-close-warning');
+    if (existing) {
+        existing.remove();
+    }
+    
+    // Create warning modal
+    const modal = document.createElement('div');
+    modal.id = 'session-close-warning';
+    modal.className = 'warning-modal';
+    modal.innerHTML = `
+        <div class="warning-content">
+            <div class="warning-icon">⚠️</div>
+            <h2>لا يمكن إغلاق الجلسة</h2>
+            <p>يجب عليك إنهاء الجلسة بشكل صحيح أولاً</p>
+            <p style="font-weight: bold; color: #d32f2f;">اضغط على الزر الأحمر (إنهاء) لإغلاق الجلسة</p>
+            <button class="btn-primary" onclick="this.parentElement.parentElement.remove()">حسناً</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
 }
 
 // ===== SESSION MANAGEMENT =====
@@ -94,6 +224,10 @@ async function startSession() {
             return;
         }
         
+        // ACTIVATE SESSION PROTECTION
+        sessionActive = true;
+        console.log('🔒 Session protection activated');
+        
         // Show session screen
         showScreen('session-screen');
         document.getElementById('main-header').style.display = 'block';
@@ -105,7 +239,7 @@ async function startSession() {
         sessionStartTime = Date.now();
         console.log('⏱️ Session start time recorded, but timer will start when avatar speaks');
         
-        // Show greeting immediately in transcript
+        // Show greeting in transcript - ONLY ONCE per session
         if (scenario) {
             const patientName = scenario.arabicTranslations?.patientInfo?.name || 'المريض';
             // Remove "السيد" or "السيدة" prefix
@@ -113,15 +247,16 @@ async function startSession() {
             // NEW GREETING - exactly as requested
             const greeting = `مرحباً، أنا ${cleanName}. دكتور، مش حاس حالي منيح اليوم. شو ممكن يكون السبب برأيك؟`;
             
-            // Add greeting ONCE after a delay to avoid duplication
+            // Add greeting to transcript after a short delay - ONLY if not already shown
             setTimeout(() => {
                 const transcript = document.getElementById('transcript');
-                // Check if greeting already exists
-                if (!transcript.textContent.includes(greeting)) {
+                // Check if greeting already exists in this session
+                if (transcript && !transcript.dataset.greetingShown) {
                     addToTranscript('avatar', greeting);
-                    console.log('👋 Patient greeting displayed');
+                    transcript.dataset.greetingShown = 'true';
+                    console.log('👋 Patient greeting displayed:', greeting);
                 }
-            }, 2000);
+            }, 1500);
         }
         
         console.log(`✅ Session started`);
@@ -215,7 +350,7 @@ function displayPatientInfo(scenario) {
     `;
     
     // Display chief complaint
-    const complaint = scenario.arabicTranslations?.presentingComplaint?.full || '';
+    const complaint = scenario.chiefComplaintArabic || scenario.arabicTranslations?.presentingComplaint?.short || '';
     document.getElementById('chief-complaint').innerHTML = `
         <p>${complaint}</p>
     `;
@@ -229,34 +364,14 @@ async function sendMessage() {
     
     if (!message) return;
     
-    // Add to transcript
-    addToTranscript('student', message);
+    // DON'T add student message or avatar response to transcript
     input.value = '';
     
     try {
-        // Send to avatar via LiveKit
+        // Send to avatar via LiveKit only - don't call FastAPI
         await sendQuestionToAvatar(message);
         
-        // Get response from backend
-        const response = await fetch('/api/session/message', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                sessionId: 'livekit-session',
-                message: message
-            })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            const avatarResponse = data.response;
-            
-            // Add avatar response to transcript
-            addToTranscript('avatar', avatarResponse);
-            
-            // Generate speech
-            await speak(avatarResponse);
-        }
+        console.log('📤 Message sent to LiveKit avatar:', message);
     } catch (error) {
         console.error(`❌ Failed to send message: ${error}`);
     }
@@ -358,9 +473,20 @@ async function endSession() {
         // End LiveKit session
         await endLiveKitSession();
         
+        // DEACTIVATE SESSION PROTECTION
+        sessionActive = false;
+        console.log('🔓 Session protection deactivated');
+        
         // Reset
         currentSessionType = null;
         currentStudentName = null;
+        
+        // Clear transcript and reset greeting flag
+        const transcript = document.getElementById('transcript');
+        if (transcript) {
+            transcript.innerHTML = '';
+            delete transcript.dataset.greetingShown;
+        }
         
         // Go back to student name screen
         showScreen('student-name-screen');
@@ -442,23 +568,39 @@ async function toggleMicrophone() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 const recognition = new SpeechRecognition();
                 recognition.lang = 'ar-SA';
-                recognition.continuous = false;
-                recognition.interimResults = false;
+                recognition.continuous = true; // Changed to true for continuous listening
+                recognition.interimResults = true; // Show interim results while speaking
+                
+                let finalTranscript = '';
                 
                 recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    console.log('🎤 Student said:', transcript);
+                    let interimTranscript = '';
                     
-                    // Add to transcript immediately
-                    addToTranscript('student', transcript);
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    
+                    console.log('🎤 Student said (interim):', interimTranscript);
+                    console.log('🎤 Student said (final):', finalTranscript);
                 };
                 
                 recognition.onerror = (event) => {
                     console.error('Speech recognition error:', event.error);
                 };
                 
+                recognition.onend = () => {
+                    console.log('🎤 Speech recognition ended');
+                };
+                
                 recognition.start();
                 window.currentRecognition = recognition;
+                window.finalTranscript = '';
             }
             
             // Publish audio to LiveKit
@@ -483,10 +625,19 @@ async function toggleMicrophone() {
             alert('فشل تفعيل الميكروفون. الرجاء السماح بالوصول للميكروفون.');
         }
     } else {
-        // Stop recording
+        // Stop recording and send message
+        let finalMessage = '';
+        
         if (window.currentRecognition) {
             window.currentRecognition.stop();
+            
+            // Get the final transcript
+            if (window.finalTranscript) {
+                finalMessage = window.finalTranscript.trim();
+            }
+            
             window.currentRecognition = null;
+            window.finalTranscript = '';
         }
         
         if (window.liveKitClient && window.liveKitClient.room) {
@@ -507,6 +658,18 @@ async function toggleMicrophone() {
         micStatus.textContent = '🎤 اضغط مطولاً على مسطرة الكيبورد (Space) للتحدث، ثم ارفع إصبعك لإرسال السؤال';
         
         console.log('✅ Microphone stopped');
+        
+        // Send the message if we have one
+        if (finalMessage) {
+            console.log('📤 Sending message:', finalMessage);
+            
+            // Simulate setting the message in input and sending
+            const input = document.getElementById('message-input');
+            if (input) {
+                input.value = finalMessage;
+                await sendMessage();
+            }
+        }
     }
 }
 

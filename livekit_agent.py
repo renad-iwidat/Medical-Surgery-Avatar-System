@@ -20,6 +20,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from livekit import agents, rtc
 from livekit.agents import AgentServer, AgentSession, Agent, JobContext
 from livekit.plugins import openai, silero, hedra
+from prompts import get_system_prompt
 
 # SSL certificates
 os.environ["SSL_CERT_FILE"] = certifi.where()
@@ -63,55 +64,25 @@ def load_scenario(scenario_type: str) -> dict:
 
 
 def build_system_prompt(scenario: dict) -> str:
-    """Build system prompt from scenario - Rule-based responses from JSON only"""
+    """Build system prompt from prompts.py - Uses the new detailed rules"""
     
+    # Get the base prompt from prompts.py
+    base_prompt = get_system_prompt(scenario, language='ar')
+    
+    # Add the complete scenario data as JSON for reference
     arabic_translations = scenario.get('arabicTranslations', {})
-    patient_info = arabic_translations.get('patientInfo', {})
-    
-    patient_name = patient_info.get('name', 'المريض')
-    patient_age = patient_info.get('age', '')
-    patient_gender = patient_info.get('gender', 'ذكر')
-    patient_occupation = patient_info.get('occupation', '')
-    
-    diagnosis = arabic_translations.get('diagnosis', '')
-    chief_complaint = arabic_translations.get('presentingComplaint', {}).get('full', '')
-    
-    # Build complete scenario data as JSON string for reference
     scenario_json = json.dumps(arabic_translations, ensure_ascii=False, indent=2)
     
-    prompt = f"""أنت مريض افتراضي في جلسة تدريب طبية OSCE للجراحة.
+    # Combine base prompt with scenario data
+    complete_prompt = f"""{base_prompt}
 
-معلوماتك الأساسية:
-- الاسم: {patient_name}
-- العمر: {patient_age}
-- الجنس: {patient_gender}
-- المهنة: {patient_occupation}
-- التشخيص: {diagnosis}
-- الشكوى الرئيسية: {chief_complaint}
+=== بيانات السيناريو الكاملة - أجب منها فقط ===
 
-التعليمات الحرجة - اتبعها بدقة:
-1. أجب فقط من المعلومات الموجودة في السيناريو أدناه - لا تخترع معلومات
-2. تحدث بالعربية الفصحى مع لهجة فلسطينية/شامية خفيفة
-3. كن واقعياً وطبيعياً - أنت مريض حقيقي يعاني من ألم
-4. أجب بإجابات قصيرة ومباشرة (جملة أو جملتين فقط)
-5. أظهر الألم والانزعاج بشكل طبيعي في إجاباتك
-6. كن متعاوناً مع الطالب لكن لا تعطِ تشخيصات طبية
-7. إذا سُئلت عن شيء غير موجود في السيناريو، قل "ما بعرف" أو "لا أعرف"
-8. لا تستخدم معرفتك الطبية العامة - فقط ما هو مكتوب في السيناريو
-
-أسلوب الرد:
-- استخدم "عندي" بدل "لدي"
-- استخدم "بحس" بدل "أشعر"
-- استخدم "وجع" أو "ألم" للألم
-- استخدم "من" للزمن (مثلاً: "من 12 ساعة")
-- كن بسيط ومباشر في الكلام
-
-معلومات السيناريو الكاملة (أجب منها فقط):
 {scenario_json}
 
-تذكر: أنت مريض حقيقي، مش دكتور. أجب فقط من المعلومات أعلاه."""
+تذكر: أجب فقط من البيانات أعلاه. إذا سُئلت عن شيء غير موجود، قل "ما بعرف"."""
     
-    return prompt
+    return complete_prompt
 
 
 class MedicalPatientAgent(Agent):
@@ -164,7 +135,7 @@ async def medical_avatar_entrypoint(ctx: JobContext):
         vad=silero.VAD.load(),
         stt=openai.STT(language="ar"),
         llm=openai.LLM(model="gpt-4o-mini", temperature=0.7),
-        tts=openai.TTS(voice="onyx"),  # Male voice for Arabic
+        tts=openai.TTS(voice="fable", speed=1.0),  # Male voice, slower for Arabic clarity
     )
     
     # Start Hedra avatar if available

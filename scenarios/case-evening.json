@@ -6,7 +6,7 @@
   "department": "Surgery",
   "session": "evening",
   "patientInfo": {
-    "name": "Mr. Hassan",
+    "name": "Hassan",
     "age": 67,
     "gender": "male",
     "occupation": "Retired accountant",
@@ -14,6 +14,7 @@
   },
   "referralReason": "3-week history of progressive jaundice",
   "chiefComplaint": "3-week history of yellow discoloration of the eyes and skin",
+  "chiefComplaintArabic": "اصفرار العينين والجلد",
   "presentingComplaintFull": "I noticed my eyes and skin turning yellow about 3 weeks ago. My family pointed it out first, and it has been getting worse. My urine has become very dark, and my stools are pale and difficult to flush. I have lost my appetite and lost about 6 kilograms in the past month. I feel weak and tired, and my clothes have become loose on me.",
   "presentingComplaintShort": "3-week history of yellow discoloration of the eyes and skin",
   "historyOfPresentingComplaint": {
